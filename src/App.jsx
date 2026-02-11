@@ -1,397 +1,466 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import saharData from "./data";
-import { 
-  FaMapMarkerAlt, 
-  FaClock, 
-  FaUtensils, 
-  FaPhone, 
-  FaSearch, 
-  FaFilter,
+import {
+  FaMapMarkerAlt,
+  FaClock,
+  FaUtensils,
+  FaPhone,
+  FaSearch,
   FaStar,
   FaHeart,
   FaShare,
-  FaInfoCircle
+  FaInfoCircle,
+  FaCopy,
+  FaExternalLinkAlt,
+  FaList,
+  FaTh,
+  FaFilter,
 } from "react-icons/fa";
 import "./App.css";
+
+const getItemId = (item) => `${item.location}|${item.name}`;
+
+const buildMapsUrl = (item) => {
+  const query = encodeURIComponent(`${item.name}, ${item.location}, Chennai, India`);
+  return `https://www.google.com/maps/search/?api=1&query=${query}`;
+};
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedType, setSelectedType] = useState("all");
   const [selectedLocation, setSelectedLocation] = useState("all");
-  const [favorites, setFavorites] = useState([]);
-  const [showFilters, setShowFilters] = useState(false);
-
-  // Get unique locations and types for filters
-  const locations = ["all", ...new Set(saharData.map(item => item.location))];
-  const types = ["all", ...new Set(saharData.map(item => item.type))];
-
-  const filteredData = saharData.filter((item) => {
-    const matchesSearch = Object.values(item).some((value) =>
-      String(value).toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    const matchesType = selectedType === "all" || item.type === selectedType;
-    const matchesLocation = selectedLocation === "all" || item.location === selectedLocation;
-    
-    return matchesSearch && matchesType && matchesLocation;
+  const [sortBy, setSortBy] = useState("location"); // "location" | "type"
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
+  const [viewMode, setViewMode] = useState("grid"); // "grid" | "list"
+  const [favorites, setFavorites] = useState(() => {
+    try {
+      const saved = localStorage.getItem("sahar-favorites");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
   });
+  const [showFilters, setShowFilters] = useState(false);
+  const [copiedId, setCopiedId] = useState(null);
 
-  const toggleFavorite = (index) => {
-    setFavorites(prev => 
-      prev.includes(index) 
-        ? prev.filter(i => i !== index) 
-        : [...prev, index]
+  useEffect(() => {
+    try {
+      localStorage.setItem("sahar-favorites", JSON.stringify(favorites));
+    } catch (_) {}
+  }, [favorites]);
+
+  const locations = useMemo(() => {
+    const areas = [...new Set(saharData.map((item) => item.location))].sort();
+    return ["all", ...areas];
+  }, []);
+  const types = useMemo(
+    () => ["all", ...new Set(saharData.map((item) => item.type))],
+    []
+  );
+
+  const filteredData = useMemo(() => {
+    let list = saharData.filter((item) => {
+      const matchesSearch = Object.values(item).some((value) =>
+        String(value).toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      const matchesType = selectedType === "all" || item.type === selectedType;
+      const matchesLocation =
+        selectedLocation === "all" || item.location === selectedLocation;
+      const id = getItemId(item);
+      const matchesFav = !showFavoritesOnly || favorites.includes(id);
+      return matchesSearch && matchesType && matchesLocation && matchesFav;
+    });
+
+    if (sortBy === "location") {
+      list = [...list].sort((a, b) =>
+        a.location.localeCompare(b.location) || a.name.localeCompare(b.name)
+      );
+    } else {
+      list = [...list].sort((a, b) => {
+        if (a.type !== b.type) return a.type === "Free" ? -1 : 1;
+        return a.location.localeCompare(b.location) || a.name.localeCompare(b.name);
+      });
+    }
+    return list;
+  }, [
+    searchTerm,
+    selectedType,
+    selectedLocation,
+    sortBy,
+    showFavoritesOnly,
+    favorites,
+  ]);
+
+  const toggleFavorite = (item) => {
+    const id = getItemId(item);
+    setFavorites((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
     );
   };
 
   const shareLocation = (item) => {
-    const text = `Sahar Food Location: ${item.name} in ${item.location} - ${item.type}`;
+    const text = `Sahar: ${item.name}, ${item.location} - ${item.type}`;
     if (navigator.share) {
       navigator.share({
-        title: 'Sahar Food Location',
-        text: text,
-        url: window.location.href
+        title: "Sahar Food - Chennai",
+        text,
+        url: window.location.href,
       });
     } else {
       navigator.clipboard.writeText(text);
-      alert('Location copied to clipboard!');
+      setCopiedId("share");
+      setTimeout(() => setCopiedId(null), 2000);
     }
+  };
+
+  const copyContact = (item) => {
+    const contact = item.contact;
+    if (!contact) return;
+    const str = Array.isArray(contact) ? contact.join(", ") : contact;
+    navigator.clipboard.writeText(str);
+    setCopiedId(getItemId(item));
+    setTimeout(() => setCopiedId(null), 2000);
   };
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
+      transition: { staggerChildren: 0.05 },
+    },
   };
 
   const cardVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 20,
-      scale: 0.95
-    },
-    visible: { 
-      opacity: 1, 
+    hidden: { opacity: 0, y: 16 },
+    visible: {
+      opacity: 1,
       y: 0,
-      scale: 1,
-      transition: {
-        duration: 0.4,
-        ease: "easeOut"
-      }
+      transition: { duration: 0.35, ease: "easeOut" },
     },
-    hover: {
-      y: -5,
-      scale: 1.02,
-      transition: {
-        duration: 0.2
-      }
-    }
+    hover: { y: -4, transition: { duration: 0.2 } },
   };
 
-  const heroVariants = {
-    hidden: { opacity: 0, y: -30 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut"
-      }
-    }
-  };
+  const freeCount = saharData.filter((i) => i.type === "Free").length;
+  const paidCount = saharData.filter((i) => i.type === "Paid").length;
 
   return (
     <div className="app">
-      {/* Hero Section */}
-      <motion.div 
+      {/* Hero */}
+      <motion.header
         className="hero"
-        variants={heroVariants}
-        initial="hidden"
-        animate="visible"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
       >
+        <div className="hero-pattern" aria-hidden="true" />
         <div className="hero-content">
-          <motion.h1 
-            className="hero-title"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-          >
-            🕌 Ramadan Sahar Foods
-          </motion.h1>
-          <motion.p 
-            className="hero-subtitle"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-          >
-            Find the best Sahar food locations across Chennai
-          </motion.p>
-          <motion.div 
-            className="hero-stats"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.6 }}
-          >
+          <p className="hero-bismillah" dir="rtl" lang="ar" aria-hidden="true">
+            بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
+          </p>
+          <p className="hero-bismillah-en">In the name of Allah, the Most Gracious, the Most Merciful</p>
+          <h1 className="hero-title">🕌 Ramadan Sahar Foods</h1>
+          <p className="hero-subtitle">Sehri & Sahar food guide for Chennai — for the benefit of the Muslim community</p>
+          <div className="hero-stats">
             <div className="stat">
-              <span className="stat-number">{saharData.length}</span>
+              <span className="stat-num">{saharData.length}</span>
               <span className="stat-label">Locations</span>
             </div>
-            <div className="stat">
-              <span className="stat-number">{saharData.filter(item => item.type === "Free").length}</span>
+            <div className="stat stat-free">
+              <span className="stat-num">{freeCount}</span>
               <span className="stat-label">Free</span>
             </div>
-            <div className="stat">
-              <span className="stat-number">{saharData.filter(item => item.type === "Paid").length}</span>
+            <div className="stat stat-paid">
+              <span className="stat-num">{paidCount}</span>
               <span className="stat-label">Paid</span>
             </div>
-          </motion.div>
+          </div>
         </div>
-      </motion.div>
+      </motion.header>
 
-      <div className="container">
-        {/* Search and Filters */}
-        <motion.div 
+      <main className="container">
+        {/* Search + toolbar */}
+        <motion.section
           className="search-section"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
         >
-          <div className="search-container">
-            <div className="search-input-wrapper">
-              <label htmlFor="search-input" className="sr-only">Search locations</label>
-              <FaSearch className="search-icon" />
+          <div className="search-row">
+            <div className="search-wrap">
+              <FaSearch className="search-icon" aria-hidden="true" />
               <input
-                id="search-input"
-                type="text"
-                className="search-bar"
-                placeholder="Search locations, names, or descriptions..."
+                type="search"
+                className="search-input"
+                placeholder="Search name, area, or description..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                aria-label="Search for Sahar food locations"
+                aria-label="Search locations"
               />
             </div>
-            <motion.button
-              className={`filter-toggle ${showFilters ? 'active' : ''}`}
-              onClick={() => setShowFilters(!showFilters)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              aria-label={showFilters ? 'Hide filters' : 'Show filters'}
-              aria-expanded={showFilters}
-            >
-              <FaFilter />
-              Filters
-            </motion.button>
+            <div className="toolbar">
+              <button
+                type="button"
+                className={`toolbar-btn ${showFilters ? "active" : ""}`}
+                onClick={() => setShowFilters(!showFilters)}
+                aria-expanded={showFilters}
+                aria-label={showFilters ? "Hide filters" : "Show filters"}
+              >
+                <FaFilter /> Filters
+              </button>
+              <button
+                type="button"
+                className={`toolbar-btn ${viewMode === "grid" ? "active" : ""}`}
+                onClick={() => setViewMode("grid")}
+                aria-label="Grid view"
+              >
+                <FaTh />
+              </button>
+              <button
+                type="button"
+                className={`toolbar-btn ${viewMode === "list" ? "active" : ""}`}
+                onClick={() => setViewMode("list")}
+                aria-label="List view"
+              >
+                <FaList />
+              </button>
+            </div>
           </div>
 
           <AnimatePresence>
             {showFilters && (
-              <motion.div 
-                className="filters"
+              <motion.div
+                className="filters-panel"
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.25 }}
               >
-                <div className="filter-group">
-                  <label htmlFor="type-filter">Type:</label>
-                  <select 
-                    id="type-filter"
-                    value={selectedType} 
-                    onChange={(e) => setSelectedType(e.target.value)}
-                    className="filter-select"
-                    aria-label="Filter by food type"
-                  >
-                    {types.map(type => (
-                      <option key={type} value={type}>
-                        {type === "all" ? "All Types" : type}
-                      </option>
-                    ))}
-                  </select>
+                <div className="filter-pills">
+                  <span className="filter-pills-label">Type:</span>
+                  {["all", "Free", "Paid"].map((t) => (
+                    <button
+                      key={t}
+                      type="button"
+                      className={`pill ${selectedType === t ? "active" : ""}`}
+                      onClick={() => setSelectedType(t)}
+                    >
+                      {t === "all" ? "All" : t}
+                    </button>
+                  ))}
                 </div>
-                <div className="filter-group">
-                  <label htmlFor="location-filter">Location:</label>
-                  <select 
+                <div className="filter-row">
+                  <label htmlFor="location-filter" className="filter-label">
+                    Area
+                  </label>
+                  <select
                     id="location-filter"
-                    value={selectedLocation} 
+                    value={selectedLocation}
                     onChange={(e) => setSelectedLocation(e.target.value)}
                     className="filter-select"
-                    aria-label="Filter by location"
+                    aria-label="Filter by area"
                   >
-                    {locations.map(location => (
-                      <option key={location} value={location}>
-                        {location === "all" ? "All Locations" : location}
+                    {locations.map((loc) => (
+                      <option key={loc} value={loc}>
+                        {loc === "all" ? "All areas" : loc}
                       </option>
                     ))}
                   </select>
                 </div>
+                <div className="filter-row">
+                  <label htmlFor="sort-by" className="filter-label">
+                    Sort
+                  </label>
+                  <select
+                    id="sort-by"
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="filter-select"
+                    aria-label="Sort by"
+                  >
+                    <option value="location">Area A–Z</option>
+                    <option value="type">Free first, then Paid</option>
+                  </select>
+                </div>
+                <button
+                  type="button"
+                  className={`pill pill-fav ${showFavoritesOnly ? "active" : ""}`}
+                  onClick={() => setShowFavoritesOnly((v) => !v)}
+                >
+                  <FaHeart />
+                  Favorites ({favorites.length})
+                </button>
               </motion.div>
             )}
           </AnimatePresence>
-        </motion.div>
+        </motion.section>
 
-        {/* Results Count */}
-        <motion.div 
-          className="results-info"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.0, duration: 0.6 }}
-        >
-          <p>
-            Showing <strong>{filteredData.length}</strong> of <strong>{saharData.length}</strong> locations
-          </p>
-        </motion.div>
+        <p className="results-count" aria-live="polite">
+          Showing <strong>{filteredData.length}</strong> of {saharData.length}{" "}
+          locations
+        </p>
 
-        {/* Cards Grid */}
         <AnimatePresence mode="wait">
           {filteredData.length > 0 ? (
-            <motion.div 
-              className="grid"
+            <motion.div
+              className={`cards-wrap ${viewMode}`}
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              key={`${searchTerm}-${selectedType}-${selectedLocation}`}
+              key={`${searchTerm}-${selectedType}-${selectedLocation}-${sortBy}-${showFavoritesOnly}-${viewMode}`}
             >
-              {filteredData.map((item, index) => (
-                <motion.div
-                  key={`${item.location}-${item.name}-${index}`}
-                  className="card"
-                  variants={cardVariants}
-                  whileHover="hover"
-                  layout
-                >
-                  <div className="card-header">
-                    <div className="card-title-section">
-                      <h2>{item.location}</h2>
-                      <p className="card-name">{item.name}</p>
+              {filteredData.map((item, index) => {
+                const id = getItemId(item);
+                const isFav = favorites.includes(id);
+                const contactStr = item.contact
+                  ? Array.isArray(item.contact)
+                    ? item.contact.join(", ")
+                    : item.contact
+                  : null;
+                return (
+                  <motion.article
+                    key={id}
+                    className="card"
+                    variants={cardVariants}
+                    whileHover="hover"
+                    layout
+                  >
+                    <div className="card-top">
+                      <div className="card-head">
+                        <h2 className="card-location">{item.location}</h2>
+                        <p className="card-name">{item.name}</p>
+                      </div>
+                      <div className="card-actions">
+                        <button
+                          type="button"
+                          className={`icon-btn fav-btn ${isFav ? "active" : ""}`}
+                          onClick={() => toggleFavorite(item)}
+                          aria-label={isFav ? "Remove from favorites" : "Add to favorites"}
+                        >
+                          <FaHeart />
+                        </button>
+                        <button
+                          type="button"
+                          className="icon-btn"
+                          onClick={() => shareLocation(item)}
+                          aria-label="Share"
+                        >
+                          <FaShare />
+                        </button>
+                      </div>
                     </div>
-                    <div className="card-actions">
-                      <motion.button
-                        className={`favorite-btn ${favorites.includes(index) ? 'active' : ''}`}
-                        onClick={() => toggleFavorite(index)}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        aria-label={favorites.includes(index) ? `Remove ${item.name} from favorites` : `Add ${item.name} to favorites`}
-                      >
-                        <FaHeart />
-                      </motion.button>
-                      <motion.button
-                        className="share-btn"
-                        onClick={() => shareLocation(item)}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        aria-label={`Share ${item.name} location information`}
-                      >
-                        <FaShare />
-                      </motion.button>
-                    </div>
-                  </div>
 
-                  <div className="card-badge">
-                    <span className={`type-badge ${item.type.toLowerCase()}`}>
-                      {item.type === "Free" ? "🆓 Free" : "💰 Paid"}
-                    </span>
-                    {item.price && (
-                      <span className="price-badge">
-                        {item.price}
+                    <div className="card-badges">
+                      <span className={`badge ${item.type.toLowerCase()}`}>
+                        {item.type === "Free" ? "Free" : "Paid"}
                       </span>
-                    )}
-                  </div>
+                      {item.price && (
+                        <span className="badge price">{item.price}</span>
+                      )}
+                    </div>
 
-                  <div className="card-details">
-                    <div className="detail-item">
-                      <FaMapMarkerAlt className="detail-icon" />
-                      <span className="detail-label">Place:</span>
-                      <span className="detail-value">{item.name}</span>
+                    <div className="card-details">
+                      {item.time && (
+                        <div className="detail">
+                          <FaClock className="detail-icon" />
+                          <span>
+                            {Array.isArray(item.time)
+                              ? item.time.join(" · ")
+                              : item.time}
+                          </span>
+                        </div>
+                      )}
+                      {item.address && (
+                        <div className="detail">
+                          <FaMapMarkerAlt className="detail-icon" />
+                          <span>{item.address}</span>
+                        </div>
+                      )}
+                      {contactStr && (
+                        <div className="detail">
+                          <FaPhone className="detail-icon" />
+                          <span>{contactStr}</span>
+                        </div>
+                      )}
                     </div>
-                    
-                    <div className="detail-item">
-                      <FaUtensils className="detail-icon" />
-                      <span className="detail-label">Type:</span>
-                      <span className="detail-value">{item.type}</span>
-                    </div>
-                    
-                    {item.time && (
-                      <div className="detail-item">
-                        <FaClock className="detail-icon" />
-                        <span className="detail-label">Time:</span>
-                        <span className="detail-value">
-                          {Array.isArray(item.time)
-                            ? item.time.join(", ")
-                            : item.time}
-                        </span>
+
+                    {item.description && (
+                      <div className="card-desc">
+                        <FaInfoCircle className="desc-icon" />
+                        <p>{item.description}</p>
                       </div>
                     )}
-                    
-                    {item.contact && (
-                      <div className="detail-item">
-                        <FaPhone className="detail-icon" />
-                        <span className="detail-label">Contact:</span>
-                        <span className="detail-value">
-                          {Array.isArray(item.contact)
-                            ? item.contact.join(", ")
-                            : item.contact}
-                        </span>
-                      </div>
-                    )}
-                  </div>
 
-                  <div className="card-description">
-                    <FaInfoCircle className="info-icon" />
-                    <p>{item.description}</p>
-                  </div>
-                </motion.div>
-              ))}
+                    <div className="card-cta">
+                      {contactStr && (
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={() => copyContact(item)}
+                        >
+                          <FaCopy />
+                          {copiedId === id ? "Copied!" : "Copy contact"}
+                        </button>
+                      )}
+                      <a
+                        href={buildMapsUrl(item)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-primary"
+                      >
+                        <FaExternalLinkAlt />
+                        Directions
+                      </a>
+                    </div>
+                  </motion.article>
+                );
+              })}
             </motion.div>
           ) : (
-            <motion.div 
-              className="no-results"
-              initial={{ opacity: 0, scale: 0.9 }}
+            <motion.div
+              className="empty-state"
+              initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.3 }}
             >
-              <div className="no-results-content">
-                <FaSearch className="no-results-icon" />
-                <h3>No matching results found</h3>
-                <p>Try adjusting your search terms or filters</p>
-                <button 
-                  className="clear-filters-btn"
-                  onClick={() => {
-                    setSearchTerm("");
-                    setSelectedType("all");
-                    setSelectedLocation("all");
-                  }}
-                  aria-label="Clear all filters"
-                >
-                  Clear All Filters
-                </button>
-              </div>
+              <FaSearch className="empty-icon" aria-hidden="true" />
+              <h3>No results found</h3>
+              <p>Try different search or filters, or show all locations.</p>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => {
+                  setSearchTerm("");
+                  setSelectedType("all");
+                  setSelectedLocation("all");
+                  setShowFavoritesOnly(false);
+                }}
+              >
+                Clear filters
+              </button>
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* Footer Message */}
         {filteredData.length > 0 && (
-          <motion.div 
-            className="footer-message"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.2, duration: 0.6 }}
+          <motion.footer
+            className="footer-dua"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
           >
-            <div className="dua-container">
-              <FaStar className="dua-icon" />
-              <p>
-                May this information be helpful. Please remember my family in your duas. 
-                <br />
-                <span className="dua-arabic">اللَّهُمَّ بَارِكْ لَنَا فِيمَا رَزَقْتَنَا</span>
-              </p>
-            </div>
-          </motion.div>
+            <FaStar className="dua-icon" aria-hidden="true" />
+            <p>
+              May this guide benefit the Ummah. Please remember us in your duas. Jazakallah Khair.
+              <br />
+              <span className="dua-arabic" dir="rtl" lang="ar">
+                اللَّهُمَّ بَارِكْ لَنَا فِيمَا رَزَقْتَنَا
+              </span>
+            </p>
+            <p className="footer-tagline">— A humble service for the Muslim community of Chennai</p>
+          </motion.footer>
         )}
-      </div>
+      </main>
     </div>
   );
 };

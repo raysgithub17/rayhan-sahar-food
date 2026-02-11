@@ -1,20 +1,50 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Amiri:wght@400;700&display=swap');
 
 :root {
-  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --secondary-gradient: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  --text-primary: #1f2937;
-  --text-secondary: #6b7280;
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --accent-primary: #667eea;
-  --accent-secondary: #764ba2;
-  --success: #dcfce7;
-  --success-text: #166534;
-  --warning: #fef3c7;
+  /* Islamic theme: green + gold + cream */
+  --islamic-green-900: #14532d;
+  --islamic-green-800: #166534;
+  --islamic-green-700: #15803d;
+  --islamic-green-600: #16a34a;
+  --islamic-green-500: #22c55e;
+  --islamic-green-100: #dcfce7;
+  --gold-700: #b45309;
+  --gold-500: #d97706;
+  --gold-400: #f59e0b;
+  --gold-100: #fef3c7;
+  --cream: #fffbeb;
+  --sand: #fefce8;
+  --white: #ffffff;
+  --slate-900: #0f172a;
+  --slate-700: #334155;
+  --slate-500: #64748b;
+  --slate-300: #cbd5e1;
+  --slate-100: #f1f5f9;
+  /* Semantic */
+  --primary: var(--islamic-green-700);
+  --primary-dark: var(--islamic-green-800);
+  --accent: var(--gold-500);
+  --accent-light: var(--gold-100);
+  --bg-page: linear-gradient(165deg, #14532d 0%, #166534 35%, #15803d 70%, #14532d 100%);
+  --bg-card: var(--white);
+  --text-primary: var(--slate-900);
+  --text-secondary: var(--slate-700);
+  --text-muted: var(--slate-500);
+  --border: var(--slate-300);
+  --success-bg: var(--islamic-green-100);
+  --success-text: var(--islamic-green-800);
+  --warning-bg: var(--gold-100);
   --warning-text: #92400e;
-  --info: #dbeafe;
-  --info-text: #1e40af;
+  --shadow-sm: 0 1px 3px rgba(21, 128, 61, 0.08);
+  --shadow-md: 0 10px 30px rgba(21, 128, 61, 0.12);
+  --shadow-lg: 0 20px 50px rgba(21, 128, 61, 0.15);
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-arabic: 'Amiri', serif;
 }
 
 * {
@@ -29,10 +59,10 @@ html {
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-body);
   line-height: 1.6;
   color: var(--text-primary);
-  background: var(--primary-gradient);
+  background: var(--bg-page);
   min-height: 100vh;
   overflow-x: hidden;
 }
@@ -43,101 +73,45 @@ body {
   flex-direction: column;
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
+  background: var(--slate-100);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--primary-gradient);
+  background: var(--islamic-green-600);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+  background: var(--islamic-green-700);
 }
 
-/* Selection styles */
 ::selection {
-  background: var(--accent-primary);
+  background: var(--islamic-green-600);
   color: white;
 }
 
-::-moz-selection {
-  background: var(--accent-primary);
-  color: white;
-}
-
-/* Focus styles for accessibility */
 *:focus {
-  outline: 2px solid var(--accent-primary);
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
 
-/* Button focus styles */
-button:focus {
-  outline: 2px solid var(--accent-primary);
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
 
-/* Input focus styles */
-input:focus,
-select:focus {
-  outline: 2px solid var(--accent-primary);
-  outline-offset: 2px;
-}
-
-/* Smooth transitions for all interactive elements */
-button,
-input,
-select,
-.card {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Loading animation */
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
-.loading {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-/* Fade in animation */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.fade-in {
-  animation: fadeIn 0.6s ease-out;
-}
-
-/* Responsive font sizes */
 @media (max-width: 768px) {
-  html {
-    font-size: 14px;
-  }
+  html { font-size: 15px; }
 }
 
 @media (max-width: 480px) {
-  html {
-    font-size: 13px;
-  }
+  html { font-size: 14px; }
 }
