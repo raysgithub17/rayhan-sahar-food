@@ -25,7 +25,13 @@
   --primary-dark: var(--islamic-green-800);
   --accent: var(--gold-500);
   --accent-light: var(--gold-100);
-  --bg-page: linear-gradient(165deg, #14532d 0%, #166534 35%, #15803d 70%, #14532d 100%);
+  --bg-page: linear-gradient(
+    165deg,
+    #14532d 0%,
+    #166534 35%,
+    #15803d 70%,
+    #14532d 100%
+  );
   --bg-card: var(--white);
   --text-primary: var(--slate-900);
   --text-secondary: var(--slate-700);
@@ -42,9 +48,9 @@
   --radius-md: 14px;
   --radius-lg: 20px;
   --radius-xl: 24px;
-  --font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-arabic: 'Amiri', serif;
+  --font-heading: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-arabic: "Amiri", serif;
 }
 
 * {
@@ -109,9 +115,13 @@ select:focus-visible {
 }
 
 @media (max-width: 768px) {
-  html { font-size: 15px; }
+  html {
+    font-size: 15px;
+  }
 }
 
 @media (max-width: 480px) {
-  html { font-size: 14px; }
+  html {
+    font-size: 14px;
+  }
 }
