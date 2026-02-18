@@ -11,6 +11,7 @@ function Navbar() {
           <li><Link to="/">Home</Link></li>
           <li><Link to="/prayer-times">Prayer Times</Link></li>
           <li><Link to="/duas">Duas</Link></li>
+          <li><Link to="/join-provider">Join as Provider</Link></li>
           <li><Link to="/contact">Contact Us</Link></li>
         </ul>
       </div>

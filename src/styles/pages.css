@@ -571,6 +571,84 @@
   text-align: center;
 }
 
+/* Radio Button Styles */
+.radio-group {
+  display: flex;
+  gap: 2rem;
+  margin-top: 0.5rem;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #333;
+}
+
+.radio-label input[type="radio"] {
+  width: 1.2rem;
+  height: 1.2rem;
+  cursor: pointer;
+  accent-color: #2d6a4f;
+}
+
+.radio-label span {
+  user-select: none;
+}
+
+/* Provider Page Layout */
+.provider-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.provider-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #2d6a4f;
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.info-card h2 {
+  color: #1e5128;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.benefits-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.benefits-list li {
+  margin-bottom: 1.2rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+.benefits-list li strong {
+  color: #2d6a4f;
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 1.05rem;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .navbar-container {
@@ -620,5 +698,14 @@
   .contact-intro,
   .form-container {
     padding: 1.5rem;
+  }
+
+  .provider-layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .info-card {
+    position: static;
   }
 }
