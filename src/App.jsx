@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import saharData from "./data";
+import HelloBar from "./components/HelloBar";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import {
@@ -148,6 +149,7 @@ const App = () => {
 
   return (
     <>
+      <HelloBar />
       <Navbar />
       <div className="app">
       {/* Hero */}

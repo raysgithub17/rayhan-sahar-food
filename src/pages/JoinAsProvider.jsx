@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import HelloBar from '../components/HelloBar';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
@@ -77,6 +78,7 @@ function JoinAsProvider() {
 
   return (
     <div className="page-container">
+      <HelloBar />
       <Navbar />
       
       <main className="contact-page">
