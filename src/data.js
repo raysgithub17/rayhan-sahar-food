@@ -1099,6 +1099,16 @@ const saharLocations = [
     contact: "Mohamed hafeez – 8610033663",
     description: "",
   },
+  {
+    location: "Royapettah",
+    name: "Jafrin",
+    type: "Free",
+    category: "Home Delivery",
+    address: "Old no 2, rob main road, royapettah, Chennai",
+    time: "3:30 AM",
+    contact: "Jafrin – 9677620573",
+    description: "",
+  },
 ];
 
 export default saharLocations;
