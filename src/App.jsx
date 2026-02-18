@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import saharData from "./data";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import {
   FaMapMarkerAlt,
   FaClock,
@@ -145,7 +147,9 @@ const App = () => {
   const paidCount = saharData.filter((i) => i.type === "Paid").length;
 
   return (
-    <div className="app">
+    <>
+      <Navbar />
+      <div className="app">
       {/* Hero */}
       <motion.header
         className="hero"
@@ -462,6 +466,8 @@ const App = () => {
         )}
       </main>
     </div>
+    <Footer />
+    </>
   );
 };
 
