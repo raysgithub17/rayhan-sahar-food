@@ -1059,6 +1059,26 @@ const saharLocations = [
     contact: "Mohamed azeem – 9384113148",
     description: "",
   },
+  {
+    location: "Mandaveli",
+    name: "Masjid eidgah",
+    type: "Free",
+    category: "Masjid",
+    address: "Vanniyambathi street mandaveli, Chennai",
+    time: "3:00-4:00 AM",
+    contact: "Sameer Ahmed – 08248968556",
+    description: "",
+  },
+  {
+    location: "Triplicane",
+    name: "Haja maideen",
+    type: "Free",
+    category: "Organization",
+    address: "Kalaivanar arangam opp, Triplicane, Chennai",
+    time: "2:00-4:00 AM",
+    contact: "Haja maideen – 7604911315",
+    description: "",
+  },
 ];
 
 export default saharLocations;
