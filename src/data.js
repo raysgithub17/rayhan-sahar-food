@@ -1039,6 +1039,26 @@ const saharLocations = [
     contact: "Shahazad – 7561826284",
     description: "",
   },
+  {
+    location: "Mountroad",
+    name: "Hotel bilal",
+    type: "Free",
+    category: "Hotel",
+    address: "Lic near by, Mountroad, Chennai",
+    time: "Time not available",
+    contact: "Dhivanasik – 9952490226",
+    description: "",
+  },
+  {
+    location: "Royapettah",
+    name: "Jamia Masjid Bathri ஜாமியா மஸ்ஜித் பாத்ரி",
+    type: "Free",
+    category: "Masjid",
+    address: "Suha mansion jani jhan khan road, Royapettah, Chennai",
+    time: "Time not available",
+    contact: "Mohamed azeem – 9384113148",
+    description: "",
+  },
 ];
 
 export default saharLocations;

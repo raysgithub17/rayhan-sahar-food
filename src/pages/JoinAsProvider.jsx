@@ -10,7 +10,9 @@ function JoinAsProvider() {
     area_name: '',
     full_address: '',
     vendor_contact_number: '',
-    vendor_contact_name: ''
+    vendor_contact_name: '',
+    time: '',
+    email: ''
   });
   const [submitStatus, setSubmitStatus] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,13 +35,14 @@ function JoinAsProvider() {
 
     const hubspotData = {
       fields: [
-        { name: 'email', value: 'smdrayhan2002@gmail.com' },
+        { name: 'email', value: formData.email || 'smdrayhan2002@gmail.com' },
         { name: 'vendor_name', value: formData.vendor_name },
         { name: 'type', value: formData.type },
         { name: 'area_name', value: formData.area_name },
         { name: 'full_address', value: formData.full_address },
         { name: 'vendor_contact_number', value: formData.vendor_contact_number },
-        { name: 'vendor_contact_name', value: formData.vendor_contact_name }
+        { name: 'vendor_contact_name', value: formData.vendor_contact_name },
+        { name: 'time', value: formData.time }
       ],
       context: {
         pageUri: window.location.href,
@@ -64,7 +67,9 @@ function JoinAsProvider() {
           area_name: '',
           full_address: '',
           vendor_contact_number: '',
-          vendor_contact_name: ''
+          vendor_contact_name: '',
+          time: '',
+          email: ''
         });
       } else {
         setSubmitStatus('error');
@@ -184,6 +189,30 @@ function JoinAsProvider() {
                   onChange={handleChange}
                   placeholder="Contact person name eg: Mohamed Rayhan"
                   required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="time">Time</label>
+                <input
+                  type="text"
+                  id="time"
+                  name="time"
+                  value={formData.time}
+                  onChange={handleChange}
+                  placeholder="e.g., 3:00 AM - 4:30 AM"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="your.email@example.com (Optional)"
                 />
               </div>
 
