@@ -1029,6 +1029,16 @@ const saharLocations = [
     contact: "Rahman – 9790945606",
     description: "",
   },
+  {
+    location: "Thousand Lights",
+    name: "Masjid-e-mahamoodi",
+    type: "Free",
+    category: "Masjid",
+    address: "Aziz mulk 2nd street, Thousand Lights, Chennai",
+    time: "Time not available",
+    contact: "Shahazad – 7561826284",
+    description: "",
+  },
 ];
 
 export default saharLocations;
