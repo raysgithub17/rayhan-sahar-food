@@ -1079,6 +1079,16 @@ const saharLocations = [
     contact: "Haja maideen – 7604911315",
     description: "",
   },
+  {
+    location: "Retteri",
+    name: "Masjid E Zohara",
+    type: "Paid",
+    category: "Masjid",
+    address: "Jeyanthi nagar 2nd main road retteri, Chennai",
+    time: "3:00-4:30 AM",
+    contact: "Haroon bhai – 9566005665",
+    description: "",
+  },
 ];
 
 export default saharLocations;
