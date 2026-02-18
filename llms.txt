@@ -1,0 +1,152 @@
+# Ramadan Sahar Food Guide - Chennai
+
+## Project Overview
+A React-based web application that helps the Muslim community in Chennai find Sahar/Sehri food locations during Ramadan. The platform lists masjids, hotels, restaurants, and organizations offering free or paid Sahar meals.
+
+## Tech Stack
+- **Framework**: React with Vite
+- **Routing**: React Router DOM
+- **Styling**: CSS (custom styles in src/styles/)
+- **Animations**: Framer Motion
+- **Icons**: React Icons (Font Awesome)
+- **Deployment**: Netlify
+- **Forms**: HubSpot Forms API integration
+
+## Project Structure
+```
+rayhan-sahar-food/
+├── public/
+│   ├── _redirects          # Netlify SPA routing configuration
+│   ├── OG-IMAGE.png        # Open Graph image
+│   └── vite.png
+├── src/
+│   ├── assets/
+│   ├── components/
+│   │   ├── Footer.jsx      # Site footer
+│   │   ├── HelloBar.jsx    # Top announcement bar for vendors
+│   │   └── Navbar.jsx      # Main navigation
+│   ├── pages/
+│   │   ├── AboutUs.jsx
+│   │   ├── ContactUs.jsx   # Contact form with HubSpot integration
+│   │   ├── Disclaimer.jsx
+│   │   ├── Duas.jsx
+│   │   ├── JoinAsProvider.jsx  # Vendor registration form
+│   │   └── PrayerTimes.jsx
+│   ├── styles/
+│   │   └── pages.css       # Global styles
+│   ├── App.css
+│   ├── App.jsx             # Main homepage with location listings
+│   ├── data.js             # Sahar location data array
+│   ├── index.css
+│   ├── main.jsx            # React entry point
+│   └── Router.jsx          # Route definitions
+├── index.html              # HTML template with Google Analytics
+├── package.json
+└── vite.config.js
+```
+
+## Key Features
+
+### 1. Location Listings (App.jsx)
+- Displays all Sahar food locations from `data.js`
+- Search functionality by name, area, or description
+- Filter by type (Free/Paid) and location
+- Sort by location or type
+- Favorites system (localStorage)
+- Grid/List view toggle
+- Google Maps integration for directions
+- Copy contact information
+
+### 2. Join as Provider Form (JoinAsProvider.jsx)
+- Vendor registration form
+- Fields:
+  - Vendor Name (required)
+  - Type: Free/Paid (required, radio buttons)
+  - Area Name (required)
+  - Full Address (required, textarea)
+  - Vendor Contact Number (required)
+  - Vendor Contact Name (required)
+  - Time (optional)
+  - Email (optional, auto-generates {vendorname}@novmail.com if not provided)
+- Submits to HubSpot Forms API
+- Portal ID: 245234841
+- Form ID: 6ce3f8f6-e22c-464d-9511-53efa381d7fa
+
+### 3. HelloBar Component
+- Green gradient announcement bar
+- Sticky at top (z-index: 999)
+- Message: "🌙Hello Muslim Community! Organizing Sehri in Chennai? Register your masjid or area with us. May Allah reward you for your service."
+- Links to /join-provider
+- Dismissible with close button
+
+### 4. Contact Form (ContactUs.jsx)
+- HubSpot integration
+- Portal ID: 245234841
+- Form ID: 47bad74a-28d8-499d-8ec1-2b1e3ad037dc
+
+## Data Structure (data.js)
+Each location object contains:
+```javascript
+{
+  location: "Area name",
+  name: "Vendor/Masjid name",
+  type: "Free" | "Paid",
+  category: "Masjid" | "Hotel" | "Restaurant" | "Organization" | "Home Delivery",
+  address: "Full address",
+  time: "Operating hours or 'Time not available'",
+  contact: "Contact person – phone number or '-'",
+  description: "Additional info"
+}
+```
+
+## Important Configuration
+
+### Google Analytics
+- Tracking ID: G-7MC72VEM46
+- Located in: index.html (lines 36-44)
+
+### Netlify Deployment
+- Domain: ramadansehrichennai.netlify.app
+- SPA routing: public/_redirects with `/* /index.html 200`
+
+### HubSpot Integration
+- User email: smdrayhan2002@gmail.com
+- Auto-generated email format: {vendorname}@novmail.com (when not provided)
+
+## Routes
+- `/` - Homepage with location listings
+- `/about` - About Us page
+- `/prayer-times` - Prayer times information
+- `/duas` - Duas and supplications
+- `/contact` - Contact form
+- `/join-provider` - Vendor registration
+- `/disclaimer` - Disclaimer page
+
+## Styling Notes
+- Green color scheme (#16a34a, #15803d, #1e5128, #2d6a4f)
+- Responsive design with mobile-first approach
+- Framer Motion animations for cards and transitions
+- Custom CSS in src/styles/pages.css
+
+## Recent Updates
+1. Added HelloBar component for vendor registration promotion
+2. Added time and email fields to Join as Provider form
+3. Email auto-generation: {vendorname}@novmail.com when not provided
+4. Recent location additions:
+   - Masjidh Takwa (Alandur)
+   - Masjid-e-mahamoodi (Thousand Lights)
+   - Hotel bilal (Mountroad)
+   - Jamia Masjid Bathri (Royapettah)
+
+## Development Commands
+```bash
+npm install          # Install dependencies
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run preview      # Preview production build
+```
+
+## Deployment
+- Automatic deployment via Netlify on git push
+- Build command: `npm run build`
+- Publish directory: `dist`
