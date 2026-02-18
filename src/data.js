@@ -1019,6 +1019,16 @@ const saharLocations = [
     contact: "-",
     description: "Last 10 nights",
   },
+  {
+    location: "Alandur",
+    name: "Masjidh Takwa",
+    type: "Free",
+    category: "Masjid",
+    address: "M.K.N Road, Chakrapani Rd, Ramapuram, Race View Colony, Alandur, Chennai, Tamil Nadu 600032",
+    time: "Time not available",
+    contact: "Rahman – 9790945606",
+    description: "",
+  },
 ];
 
 export default saharLocations;
