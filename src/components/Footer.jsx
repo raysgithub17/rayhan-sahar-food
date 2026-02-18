@@ -14,6 +14,7 @@ function Footer() {
               <li><a href="/">Home</a></li>
               <li><a href="/prayer-times">Prayer Times</a></li>
               <li><a href="/duas">Duas</a></li>
+              <li><a href="/contact">Contact Us</a></li>
               <li><a href="/about">About Us</a></li>
             </ul>
           </div>

@@ -4,6 +4,7 @@ import Disclaimer from './pages/Disclaimer';
 import AboutUs from './pages/AboutUs';
 import PrayerTimes from './pages/PrayerTimes';
 import Duas from './pages/Duas';
+import ContactUs from './pages/ContactUs';
 
 function Router() {
   return (
@@ -13,6 +14,7 @@ function Router() {
       <Route path="/about" element={<AboutUs />} />
       <Route path="/prayer-times" element={<PrayerTimes />} />
       <Route path="/duas" element={<Duas />} />
+      <Route path="/contact" element={<ContactUs />} />
     </Routes>
   );
 }
