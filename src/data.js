@@ -28,6 +28,7 @@ const saharLocations = [
     time: "2:30 AM onwards",
     contact: "Abuthahir Abuthahir – 9751092890",
     description: "Poonamallee | Open for All",
+    ladies: true,
   },
   {
     location: "Guindy Market",
@@ -48,6 +49,7 @@ const saharLocations = [
     time: "2:30 AM – 4:00 AM",
     contact: "9940321781",
     description: "Pre-registration must | Token issued February 14-16",
+    ladies: true,
   },
   {
     location: "Triplicane",
@@ -68,6 +70,7 @@ const saharLocations = [
     time: "3:00 AM – 4:00 AM",
     contact: "9841195318",
     description: "Pre-registration must | For students/workers/hospital guests",
+    ladies: true,
   },
   {
     location: "Perungudi",
@@ -78,6 +81,7 @@ const saharLocations = [
     time: "11:00 PM – 12:00 AM",
     contact: "9551711510",
     description: "provided after taraweeh | Delivered to workplaces/hostels for paid for ladies",
+    ladies: true,
   },
   {
     location: "Saidapet",
@@ -118,6 +122,7 @@ const saharLocations = [
     time: "11:00 PM – 11:30 PM",
     contact: "9941234386",
     description: "Pre-registration must | Free sahur parcel nightly",
+    ladies: true,
   },
   {
     location: "Ambattur",
@@ -418,6 +423,7 @@ const saharLocations = [
     time: "3:00 AM – 4:00 AM",
     contact: "8428377778",
     description: "Pre-registration must | Sahur for workers/hospital visitors",
+    ladies: true,
   },
   {
     location: "Medavakkam",
@@ -448,6 +454,7 @@ const saharLocations = [
     time: "3:00 AM – 4:00 AM",
     contact: "9840290766",
     description: "Pre-registration must | Sahur meal available",
+    ladies: true,
   },
   {
     location: "Saidapet West",
@@ -558,6 +565,7 @@ const saharLocations = [
     time: "3:00 AM – 4:15 AM",
     contact: "Abdul Aziz – 9094560414",
     description: "Pre-registration must | Poor/travelers welcome",
+    ladies: true,
   },
   {
     location: "Tambaram West",
@@ -618,6 +626,7 @@ const saharLocations = [
     time: "3:00 AM",
     contact: "9884193210",
     description: "Pre-registration must | Full Ramadan Sahur package available",
+    ladies: true,
   },
   {
     location: "Madipakkam",
@@ -768,6 +777,7 @@ const saharLocations = [
     time: "3:00 AM – 4:00 AM",
     contact: "9894239866",
     description: "Pre-registration must | Free Sahur meal",
+    ladies: true,
   },
   {
     location: "Velachery",
@@ -898,6 +908,7 @@ const saharLocations = [
     time: "2:30 AM – 4:00 AM",
     contact: "9047217378",
     description: "Pre-registration must | Parcel only",
+    ladies: true,
   },
   {
     location: "Triplicane",
@@ -948,6 +959,7 @@ const saharLocations = [
     time: "Time not available",
     contact: "9342391015",
     description: "Pre-registration required: https://forms.gle/R5jASkt73P5FHx5V7. Only for sisters staying in PG / alone.",
+    ladies: true,
   },
   {
     location: "Madras Medical College",
@@ -1108,6 +1120,17 @@ const saharLocations = [
     time: "3:30 AM",
     contact: "Jafrin – 9677620573",
     description: "",
+  },
+  {
+    location: "Perambur",
+    name: "Sahar Meal Arrangement - Thiru.V.K. Nagar",
+    type: "Paid",
+    category: "Home Delivery",
+    address: "Perambur, Chennai",
+    time: "Time not available",
+    contact: "9791094468",
+    description: "Sahar meal for expatriate employees, students in hostels, hospital patients, and underprivileged. Registration required before Asr daily. One day meal: 50 rupees. Contact Mr. Asif Sahib. Additional contacts: Janab Ilyas Sb, Janab Aarif Sb, Janab Ejaz Sb.",
+    ladies: true,
   },
 ];
 

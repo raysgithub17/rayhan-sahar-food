@@ -35,6 +35,7 @@ const App = () => {
   const [selectedLocation, setSelectedLocation] = useState("all");
   const [sortBy, setSortBy] = useState("location"); // "location" | "type"
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
+  const [showLadiesOnly, setShowLadiesOnly] = useState(false);
   const [viewMode, setViewMode] = useState("grid"); // "grid" | "list"
   const [favorites, setFavorites] = useState(() => {
     try {
@@ -72,7 +73,8 @@ const App = () => {
         selectedLocation === "all" || item.location === selectedLocation;
       const id = getItemId(item);
       const matchesFav = !showFavoritesOnly || favorites.includes(id);
-      return matchesSearch && matchesType && matchesLocation && matchesFav;
+      const matchesLadies = !showLadiesOnly || item.ladies === true;
+      return matchesSearch && matchesType && matchesLocation && matchesFav && matchesLadies;
     });
 
     if (sortBy === "location") {
@@ -92,6 +94,7 @@ const App = () => {
     selectedLocation,
     sortBy,
     showFavoritesOnly,
+    showLadiesOnly,
     favorites,
   ]);
 
@@ -146,6 +149,7 @@ const App = () => {
 
   const freeCount = saharData.filter((i) => i.type === "Free").length;
   const paidCount = saharData.filter((i) => i.type === "Paid").length;
+  const ladiesCount = saharData.filter((i) => i.ladies === true).length;
 
   return (
     <>
@@ -179,6 +183,10 @@ const App = () => {
             <div className="stat stat-paid">
               <span className="stat-num">{paidCount}</span>
               <span className="stat-label">Paid</span>
+            </div>
+            <div className="stat stat-ladies">
+              <span className="stat-num">{ladiesCount}</span>
+              <span className="stat-label">Ladies</span>
             </div>
           </div>
         </div>
@@ -295,6 +303,13 @@ const App = () => {
                 >
                   <FaHeart />
                   Favorites ({favorites.length})
+                </button>
+                <button
+                  type="button"
+                  className={`pill pill-ladies ${showLadiesOnly ? "active" : ""}`}
+                  onClick={() => setShowLadiesOnly((v) => !v)}
+                >
+                  👩 Ladies Available ({ladiesCount})
                 </button>
               </motion.div>
             )}
@@ -440,6 +455,7 @@ const App = () => {
                   setSelectedType("all");
                   setSelectedLocation("all");
                   setShowFavoritesOnly(false);
+                  setShowLadiesOnly(false);
                 }}
               >
                 Clear filters
