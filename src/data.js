@@ -1089,6 +1089,16 @@ const saharLocations = [
     contact: "Haroon bhai – 9566005665",
     description: "",
   },
+  {
+    location: "Kundrathur",
+    name: "Madha engineering college",
+    type: "Paid",
+    category: "Organization",
+    address: "Madha engineering college, Kundrathur, Chennai",
+    time: "3:30-4:30 AM",
+    contact: "Mohamed hafeez – 8610033663",
+    description: "",
+  },
 ];
 
 export default saharLocations;
