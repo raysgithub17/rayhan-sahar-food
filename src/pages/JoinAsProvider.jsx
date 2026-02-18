@@ -33,9 +33,12 @@ function JoinAsProvider() {
     const formGuid = '6ce3f8f6-e22c-464d-9511-53efa381d7fa';
     const url = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`;
 
+    const generatedEmail = formData.email || 
+      `${formData.vendor_name.toLowerCase().replace(/\s+/g, '')}@novmail.com`;
+
     const hubspotData = {
       fields: [
-        { name: 'email', value: formData.email || 'smdrayhan2002@gmail.com' },
+        { name: 'email', value: generatedEmail },
         { name: 'vendor_name', value: formData.vendor_name },
         { name: 'type', value: formData.type },
         { name: 'area_name', value: formData.area_name },
