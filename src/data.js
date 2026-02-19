@@ -1132,6 +1132,26 @@ const saharLocations = [
     description: "Sahar meal for expatriate employees, students in hostels, hospital patients, and underprivileged. Registration required before Asr daily. One day meal: 50 rupees. Contact Mr. Asif Sahib. Additional contacts: Janab Ilyas Sb, Janab Aarif Sb, Janab Ejaz Sb.",
     ladies: true,
   },
+  {
+    location: "Vandhalur",
+    name: "Al madhina masijid",
+    type: "Free",
+    category: "Masjid",
+    address: "Otheri, Vandhalur, Chennai",
+    time: "3:00-4:30 AM",
+    contact: "Jamilur Rahman – 9994276113",
+    description: "",
+  },
+  {
+    location: "Triplicane",
+    name: "Mohamed",
+    type: "Free",
+    category: "Home Delivery",
+    address: "N0: 9/19, General Swamy Street, opposite to Mcgan Ladies Hostel, Near Zambazar Market, Triplicane, Chennai- 600 005",
+    time: "3:00 AM",
+    contact: "Mohamed – 9790405029",
+    description: "",
+  },
 ];
 
 export default saharLocations;
